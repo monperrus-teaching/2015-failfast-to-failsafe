@@ -4,11 +4,31 @@ public class FastToSafeExample {
 
     private String quz;
     private int rad;
+    private A guy;
+    private B kie;
 
     public FastToSafeExample(String aString) {
         foo(aString);
         this.quz = bar(aString);
         this.rad = jiu();
+        this.guy = jds(5, 6, true);
+        this.kie = mel();
+    }
+
+    private B mel() {
+        if (true) {
+            throw new IllegalArgumentException();
+        }
+
+        return new B(5, new C(true));
+    }
+
+    private A jds(int a, int b, boolean c) {
+        if (c) {
+            throw new IllegalArgumentException();
+        }
+
+        return new A(a, b, c);
     }
 
     // TODO: Check if it works with int[]
