@@ -1,9 +1,15 @@
-# fast-to-safe
-A fast-fail to safe-fail Spoon transformation.
+#Analyse et transformation de code source
 
+
+####_Objectif_
+Analyser et transformer de manière automatique le code source d'un projet réel open source de fail-fast à fail-safe.
+
+###_Contributeurs_
+* Dieulin MAMBOUANA ([@Dieulin](https://github.com/Dieulin))
+* Romain Sommerard([@sommerard](https://github.com/rsommerard))
 
 ##Projet choisi pour le test
-Nous avons prévu de tester nos transformations sur _Jetty project_, un moteur Java open source basé sur le Web Server Web et mis à disposition par la fondation Eclipse. 
+Nous avons prévu de tester nos transformations sur _Jetty project_, un moteur Java open source basé sur le Server Web et mis à disposition par la fondation Eclipse. 
 
 ![alt text](https://cloud.githubusercontent.com/assets/14126801/10949926/b01ca386-8335-11e5-869a-86fe48b9bb7a.png "Logo Jetty")
 
@@ -14,7 +20,9 @@ Pour nos expériementations nous avons choisi la version 8 stable dont le code s
 > Nous avons également limité notre périmètre d'intervention sur l'ensemble du contenu du repertoire _jetty-xml_.
 
 ####_Mode opératoire_
-Pour appliquer valider tranformations sur _Jetty_ :
+Pour valider nos tranformations sur _Jetty_ nous avons:
 * Tester le fonctionnement natif de _Jetty_
 * Appliquer la transformation sur _Jetty_
-* Vérifier que la version transformée conserve le même mode de fonctionnement que la version originale
+* Tester le fonctionnement de la version transformée
+* Vérifier que cette dernière conserve le même mode de fonctionnement que la version originale
+
