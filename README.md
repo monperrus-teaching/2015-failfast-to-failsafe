@@ -2,11 +2,14 @@
 
 
 ####_Objectif_
-Analyser et transformer de manière automatique le code source d'un projet réel open source de fail-fast à fail-safe.
+Analyser et transformer de manière automatique le code source d'un projet réel open source du fail-fast en fail-safe, de manière à ce que chaque exécution se termine proprement, sans crash.
 
 ###_Contributeurs_
-* Dieulin MAMBOUANA ([@Dieulin](https://github.com/Dieulin))
-* Romain Sommerard([@sommerard](https://github.com/rsommerard))
+* Dieulin MAMBOUANA ([@Dieulin Mambouana](https://github.com/Dieulin))
+* Romain Sommerard([@Romain Sommerard](https://github.com/rsommerard))
+
+###_Outil_
+Pour atteindre notre objectif, nous avons utilisé la librairie Java [_Spoon_](http://spoon.gforge.inria.fr/). Un puissant outil mis à disposition par l'INRIA pour analyser et transformer efficacement le code.
 
 ##Projet choisi pour le test
 Nous avons prévu de tester nos transformations sur _Jetty project_, un moteur Java open source basé sur le Server Web et mis à disposition par la fondation Eclipse. 
