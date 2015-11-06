@@ -22,7 +22,7 @@ Pour nos expériementations nous avons choisi la version 8 stable dont le code s
 
 > Etant un gros projet, nous avons également limité notre périmètre d'intervention sur le du contenu du repertoire _jetty-xml_.
 
-####_Mode opératoire_
+###_Mode opératoire_
 Pour valider nos tranformations sur _Jetty_ nous avons :
 * Tester le fonctionnement natif de _Jetty_
 * Appliquer nos transformations sur _Jetty_
