@@ -15,6 +15,10 @@ public class FastToSafeExample {
         this.kie = mel();
     }
 
+    public JsonToken splats() throws Exception {
+        throw new Exception();
+    }
+
     private B mel() {
         if (true) {
             throw new IllegalArgumentException();
