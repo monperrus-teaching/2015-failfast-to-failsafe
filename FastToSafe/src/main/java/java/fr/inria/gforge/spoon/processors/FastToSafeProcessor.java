@@ -1,4 +1,4 @@
-package fr.inria.gforge.spoon.processors;
+package java.fr.inria.gforge.spoon.processors;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.lf5.Log4JLogRecord;
@@ -18,6 +18,8 @@ import java.util.List;
 
 public class FastToSafeProcessor extends AbstractProcessor<CtThrow> {
 
+    public int throwNumber = 0;
+
     private enum PrimitiveType {
         BYTE,
         SHORT,
@@ -32,6 +34,8 @@ public class FastToSafeProcessor extends AbstractProcessor<CtThrow> {
 
     @Override
     public void process(CtThrow ctThrow) {
+
+        throwNumber++;
 
         System.out.println("-------------------------");
         System.out.println(ctThrow);
@@ -142,7 +146,7 @@ public class FastToSafeProcessor extends AbstractProcessor<CtThrow> {
     public static void main(String[] args) throws Exception {
         spoon.Launcher.main(new String[] {
                 "-p",
-                "fr.inria.gforge.spoon.processors.FastToSafeProcessor",
+                "FastToSafeProcessor",
                 "-i",
                 "src/main/java/fr/inria/gforge/spoon/examples/"
         });
