@@ -1,8 +1,11 @@
 package fr.inria.gforge.spoon.processors;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.lf5.Log4JLogRecord;
 import spoon.processing.AbstractProcessor;
 import spoon.reflect.code.CtCodeSnippetStatement;
 import spoon.reflect.code.CtThrow;
+import spoon.reflect.declaration.CtClass;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.reference.CtTypeReference;
 import spoon.support.reflect.reference.CtTypeReferenceImpl;
@@ -37,14 +40,23 @@ public class FastToSafeProcessor extends AbstractProcessor<CtThrow> {
 
         CtMethod ctMethod = ctThrow.getParent(CtMethod.class);
 
+        System.out.println("Class> " + ctMethod.getParent(CtClass.class).getQualifiedName());
+        System.out.println("Method> " + ctMethod.getSimpleName());
+
         System.out.println("Return type> " + ctMethod.getType().getSimpleName());
 
         String defaultValue = null;
 
         if (ctMethod.getType().isPrimitive()) {
+            System.out.println("isPrimitive> true");
             defaultValue = getTypeDefaultValue(ctMethod.getType().getSimpleName());
         } else {
+            System.out.println("isPrimitive> false");
             defaultValue = getInitalizeString(ctMethod.getType().getActualClass());
+        }
+
+        if (defaultValue == null) {
+            return;
         }
 
         System.out.println("Default value> " + defaultValue);
@@ -56,9 +68,23 @@ public class FastToSafeProcessor extends AbstractProcessor<CtThrow> {
     }
 
     private String getInitalizeString(Class classToInitialize) {
+        System.out.println("classToInitialize> " + classToInitialize.getSimpleName());
+        System.out.println("isEnum> " + classToInitialize.isEnum());
+
+        if (classToInitialize.isEnum()) {
+            Object[] enumConstants = classToInitialize.getEnumConstants();
+            return classToInitialize.getSimpleName() + "." + enumConstants[0].toString();
+        }
+
         Constructor[] constructors = classToInitialize.getConstructors();
 
+        if (constructors.length == 0) {
+            return null;
+        }
+
         Constructor constructor = constructors[0];
+
+        System.out.println("constructors.length> " + constructors.length);
 
         for (int i = 1; i < constructors.length; i++) {
             if (constructors[i].getParameterCount() < constructor.getParameterCount()) {
@@ -74,7 +100,6 @@ public class FastToSafeProcessor extends AbstractProcessor<CtThrow> {
             Class[] parameters = constructor.getParameterTypes();
 
             for (int i = 0; i < parameters.length; i++) {
-                // TODO: Look if it is primitive type.
                 if (parameters[i].isPrimitive()) {
                     defaultValue += getTypeDefaultValue(parameters[i].getSimpleName());
                 } else {
