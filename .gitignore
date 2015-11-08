@@ -2,5 +2,13 @@
 bin/
 gen/
 spooned/
-*.DS_Store
 .idea/
+*~
+*.bak
+*.old
+.DS_Store
+
+# Eclipse
+.classpath
+.project
+.settings
