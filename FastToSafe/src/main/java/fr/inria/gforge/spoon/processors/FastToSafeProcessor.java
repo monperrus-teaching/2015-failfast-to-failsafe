@@ -55,6 +55,10 @@ public class FastToSafeProcessor extends AbstractProcessor<CtThrow> {
             defaultValue = getInitalizeString(ctMethod.getType().getActualClass());
         }
 
+        if (defaultValue == null) {
+            return;
+        }
+
         System.out.println("Default value> " + defaultValue);
 
         snippet.setValue("return " + defaultValue);
@@ -73,6 +77,10 @@ public class FastToSafeProcessor extends AbstractProcessor<CtThrow> {
         }
 
         Constructor[] constructors = classToInitialize.getConstructors();
+
+        if (constructors.length == 0) {
+            return null;
+        }
 
         Constructor constructor = constructors[0];
 
