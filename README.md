@@ -36,7 +36,7 @@ Pour valider nos tranformations sur _Jetty_ nous avons :
 - créer un dossier /lib dans la racine du projet à tester
 - mettre le jar généré précédemment dans le dossier /lib
 - mettre le snippet ci-dessous dans le pom.xml
-`
+```
 <plugin>
             <groupId>fr.inria.gforge.spoon</groupId>
             <artifactId>spoon-maven-plugin</artifactId>
@@ -71,4 +71,4 @@ Pour valider nos tranformations sur _Jetty_ nous avons :
                 </dependency>
             </dependencies>
         </plugin>
-`
+```
