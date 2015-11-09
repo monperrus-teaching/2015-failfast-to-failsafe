@@ -1,4 +1,4 @@
-package resources.src;
+package src;
 
 public class B {
 

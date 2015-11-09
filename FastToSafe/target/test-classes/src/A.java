@@ -1,4 +1,4 @@
-package resources.src;
+package src;
 
 import java.lang.Exception;
 
