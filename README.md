@@ -30,7 +30,7 @@ Pour valider nos tranformations sur _Jetty_ nous avons :
 * Vérifier que cette dernière conserve le même mode de fonctionnement de la version originale
 
 
-
+### Lancer le processeur sur un projet réel
 
 - générer le jar du processor `mvn package`
 - créer un dossier /lib dans la racine du projet à tester
