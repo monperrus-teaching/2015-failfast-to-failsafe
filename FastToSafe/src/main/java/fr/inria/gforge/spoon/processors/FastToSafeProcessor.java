@@ -32,6 +32,10 @@ public class FastToSafeProcessor extends AbstractProcessor<CtThrow> {
 
         CtMethod ctMethod = ctThrow.getParent(CtMethod.class);
 
+        if (ctMethod == null) {
+            return;
+        }
+
         System.out.println("Class> " + ctMethod.getParent(CtClass.class).getQualifiedName());
         System.out.println("Method> " + ctMethod.getSimpleName());
 
@@ -84,6 +88,7 @@ public class FastToSafeProcessor extends AbstractProcessor<CtThrow> {
             }
         }
 
+        System.out.println("constructor.getParameterCount()> " + constructor.getParameterCount());
         if (constructor.getParameterCount() == 0) {
             return "new " + classToInitialize.getSimpleName() + "()";
         } else {
@@ -133,8 +138,8 @@ public class FastToSafeProcessor extends AbstractProcessor<CtThrow> {
 
     public static void main(String[] args) throws Exception {
         spoon.Launcher.main(new String[] {
-                "-p", "FastToSafeProcessor",
-                "-i", "src/test/resources/src",
+                "-p", "fr.inria.gforge.spoon.processors.FastToSafeProcessor",
+                "-i", "src/main/resources",
                 "-o", "target/spooned"
         });
     }
