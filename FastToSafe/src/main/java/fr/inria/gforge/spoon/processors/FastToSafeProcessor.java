@@ -139,7 +139,7 @@ public class FastToSafeProcessor extends AbstractProcessor<CtThrow> {
     public static void main(String[] args) throws Exception {
         spoon.Launcher.main(new String[] {
                 "-p", "fr.inria.gforge.spoon.processors.FastToSafeProcessor",
-                "-i", "src/main/resources",
+                "-i", "../commons-email/src/main/java",
                 "-o", "target/spooned"
         });
     }
