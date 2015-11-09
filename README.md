@@ -29,3 +29,46 @@ Pour valider nos tranformations sur _Jetty_ nous avons :
 * Tester le fonctionnement de la version transformée _Jetty_
 * Vérifier que cette dernière conserve le même mode de fonctionnement de la version originale
 
+
+
+
+- générer le jar du processor `mvn package`
+- créer un dossier /lib dans la racine du projet à tester
+- mettre le jar généré précédemment dans le dossier /lib
+- mettre le snippet ci-dessous dans le pom.xml
+`
+<plugin>
+            <groupId>fr.inria.gforge.spoon</groupId>
+            <artifactId>spoon-maven-plugin</artifactId>
+            <version>2.2</version>
+            <executions>
+                <execution>
+                    <phase>generate-sources</phase>
+                    <goals>
+                        <goal>generate</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <srcFolder>${project.basedir}/src/main/java</srcFolder>
+                <!--<outFolder>${project.basedir}/spooned</outFolder>-->
+                <processors>
+                    <processor>fr.inria.gforge.spoon.processors.FastToSafeProcessor</processor>
+                </processors>
+            </configuration>
+            <dependencies>
+                <dependency>
+                    <groupId>fr.inria.gforge.spoon</groupId>
+                    <artifactId>spoon-core</artifactId>
+                    <version>4.3.0</version>
+                </dependency>
+                <dependency>
+                    <groupId>fr.inria.gforge.spoon.processors</groupId>
+                    <artifactId>fasttosafe</artifactId>
+                    <version>1.0-SNAPSHOT</version>
+                    <scope>system</scope>
+                    <systemPath>${project.basedir}/lib/fasttosafe-1.0-SNAPSHOT.jar</systemPath>
+                </dependency>
+            </dependencies>
+        </plugin>
+`
