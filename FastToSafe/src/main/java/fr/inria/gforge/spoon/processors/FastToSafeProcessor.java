@@ -1,8 +1,7 @@
 package fr.inria.gforge.spoon.processors;
 
 import spoon.processing.AbstractProcessor;
-import spoon.reflect.code.CtCodeSnippetStatement;
-import spoon.reflect.code.CtThrow;
+import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtClass;
 import spoon.reflect.declaration.CtConstructor;
 import spoon.reflect.declaration.CtMethod;
@@ -15,10 +14,10 @@ import java.util.HashMap;
 public class FastToSafeProcessor extends AbstractProcessor<CtThrow> {
 
     private static final boolean PROCESS_PRIMITIVE = true;
-    private static final boolean PROCESS_ENUM = false;
-    private static final boolean PROCESS_INTERFACE = false;
-    private static final boolean PROCESS_ABSTRACT = false;
-    private static final boolean PROCESS_OBJECT = false;
+    private static final boolean PROCESS_ENUM = true;
+    private static final boolean PROCESS_INTERFACE = true;
+    private static final boolean PROCESS_ABSTRACT = true;
+    private static final boolean PROCESS_OBJECT = true;
     private static final boolean PROCESS_CONSTRUCTOR = true;
 
 
@@ -152,8 +151,8 @@ public class FastToSafeProcessor extends AbstractProcessor<CtThrow> {
 
         String value = "return null";
 
-        if (abstractToInitialize.isAssignableFrom(currentClass)) {
-            value = getObjectInstantiationString(currentClass);
+        if (abstractToInitialize.isAssignableFrom(currentClass) && !abstractToInitialize.getSimpleName().equals(currentClass.getSimpleName())) {
+            value = "return " + getObjectInstantiationString(currentClass);
         }
 
         applySnippet(ctThrow, value);
@@ -165,7 +164,8 @@ public class FastToSafeProcessor extends AbstractProcessor<CtThrow> {
         CtMethod ctMethod = ctThrow.getParent(CtMethod.class);
         Class objectToInitialize = ctMethod.getType().getActualClass();
 
-        String value = getObjectInstantiationString(objectToInitialize);
+        String value = "return ";
+        value += getObjectInstantiationString(objectToInitialize);
         applySnippet(ctThrow, value);
     }
 
@@ -243,7 +243,7 @@ public class FastToSafeProcessor extends AbstractProcessor<CtThrow> {
 
         System.out.println("|-Minimum constructor parameters: " + constructor.getParameterCount());
         if (constructor.getParameterCount() == 0) {
-            return "new " + classToInitialize.getSimpleName() + "()";
+            return "new " + classToInitialize.getName() + "()";
         } else {
             String defaultValue = "new " + classToInitialize.getName() + "(";
 
