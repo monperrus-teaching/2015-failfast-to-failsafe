@@ -44,7 +44,7 @@
         <connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/email/trunk</connection>
         <developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/email/trunk</developerConnection>
         <url>http://svn.apache.org/viewvc/commons/proper/email/trunk</url>
-    </scm> 
+    </scm>
 
     <developers>
         <developer>
@@ -139,7 +139,7 @@
         <developer>
             <name>Siegfried Goeschl</name>
             <id>sgoeschl</id>
-            <email>sgoeschl@apache.org</email>            
+            <email>sgoeschl@apache.org</email>
             <roles>
               <role>Java Developer</role>
             </roles>
@@ -151,7 +151,7 @@
             <email>tn@apache.org</email>
             <organization>The Apache Software Foundation</organization>
             <roles />
-        </developer>        
+        </developer>
         <developer>
             <name>Gary Gregory</name>
             <id>ggregory</id>
@@ -160,14 +160,14 @@
             <timezone>-5</timezone>
         </developer>
     </developers>
-    <contributors>    
+    <contributors>
         <contributor>
             <name>Bindul Bhowmik</name>
         </contributor>
         <contributor>
             <name>Colin Chalmers</name>
             <email>colin.chalmers@maxware.nl</email>
-        </contributor> 
+        </contributor>
         <contributor>
             <name>Frank Y. Kim</name>
             <email>frank.kim@clearink.com</email>
@@ -266,7 +266,7 @@
     		<groupId>org.subethamail</groupId>
     		<artifactId>subethasmtp</artifactId>
     		<version>3.1.7</version>
-    		<scope>test</scope>
+          <scope>test</scope>
             <exclusions>
                 <exclusion>
                     <groupId>javax.mail</groupId>
@@ -308,11 +308,11 @@
 
         <!-- override the default commons encoding property -->
         <commons.encoding>UTF-8</commons.encoding>
-        
+
         <powermock.version>1.4.12</powermock.version>
         <easymock.version>3.2</easymock.version>
         <findbugs.version>2.5.5</findbugs.version>
-    </properties> 
+    </properties>
 
     <build>
         <plugins>
@@ -329,13 +329,15 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <srcFolder>${project.basedir}/src/main/java</srcFolder>
-                    <!--<outFolder>${project.basedir}/spooned</outFolder>-->
-                    <processors>
+                  <configuration>
+                    <!--<srcFolder>${project.basedir}/src/main/java</srcFolder>-->
+                      <srcFolder>${project.basedir}/src/main/java</srcFolder>
+                      <!--<outFolder>${project.basedir}/spooned</outFolder>-->
+                      <processors>
+                        <!--<processor>fr.inria.gforge.spoon.processors.FastToSafeTestProcessor</processor>-->
                         <processor>fr.inria.gforge.spoon.processors.FastToSafeProcessor</processor>
-                    </processors>
-                </configuration>
+                      </processors>
+                  </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>fr.inria.gforge.spoon</groupId>
@@ -403,7 +405,7 @@
                         </manifest>
                     </archive>
                 </configuration>
-            </plugin>            
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
@@ -428,9 +430,9 @@
         <id>apache.website</id>
         <name>Apache Website</name>
         <url>${commons.deployment.protocol}://people.apache.org/www/commons.apache.org/email/</url>
-      </site>    
+      </site>
     </distributionManagement>
-    
+
     <reporting>
         <plugins>
             <!-- generate the changes report from changes.xml -->
@@ -447,7 +449,7 @@
                         </reports>
                     </reportSet>
                 </reportSets>
-            </plugin> 
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -488,7 +490,7 @@
                         <exclude>src/test/resources/eml/*.eml</exclude>
                     </excludes>
                 </configuration>
-            </plugin>            
+            </plugin>
         </plugins>
     </reporting>
 
@@ -504,7 +506,7 @@
                 </site>
             </distributionManagement>
         </profile>
-        
+
   		<profile>
   			<!-- Use a profile to detect if we are running in a Java 1.8 environment.
   			     Use different versions of easymock/powermock, otherwise the test execution will fail -->
@@ -516,6 +518,6 @@
         		<powermock.version>1.5.6</powermock.version>
                 <findbugs.version>3.0.0</findbugs.version>
     		</properties>
-		</profile>        
+		</profile>
     </profiles>
 </project>
