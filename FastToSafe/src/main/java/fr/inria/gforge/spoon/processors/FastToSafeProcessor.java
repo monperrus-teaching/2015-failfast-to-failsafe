@@ -10,6 +10,7 @@ import spoon.reflect.reference.CtTypeReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.List;
 
 public class FastToSafeProcessor extends AbstractProcessor<CtThrow> {
 
@@ -59,6 +60,22 @@ public class FastToSafeProcessor extends AbstractProcessor<CtThrow> {
             }
 
             return false;
+        }
+
+        CtTry ctTry = ctThrow.getParent(CtTry.class);
+
+        if (ctTry != null) {
+            boolean stop = false;
+            for (CtStatement ctStatement : ctTry.getBody().getStatements()) {
+                if (ctStatement.toString().contains(ctThrow.toString())) {
+                    stop = true;
+                    break;
+                }
+            }
+
+            if (stop) {
+                return false;
+            }
         }
 
         CtTypeReference ctTypeReference = ctMethod.getType();
