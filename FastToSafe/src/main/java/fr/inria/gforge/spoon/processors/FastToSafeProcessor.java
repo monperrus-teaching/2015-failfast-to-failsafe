@@ -169,7 +169,7 @@ public class FastToSafeProcessor extends AbstractProcessor<CtThrow> {
         String value = "return null";
 
         if (abstractToInitialize.isAssignableFrom(currentClass) && !abstractToInitialize.getSimpleName().equals(currentClass.getSimpleName())) {
-            value = "return " + getObjectInstantiationString(currentClass);
+            value = "return this";
         }
 
         applySnippet(ctThrow, value);

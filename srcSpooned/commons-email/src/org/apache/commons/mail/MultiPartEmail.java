@@ -26,7 +26,7 @@ public class MultiPartEmail extends org.apache.commons.mail.Email {
             bodyPart.setContent(partContent, partContentType);
             getContainer().addBodyPart(bodyPart);
         } catch (final javax.mail.MessagingException me) {
-            return this;
+            throw new org.apache.commons.mail.EmailException(me);
         }
         return this;
     }
@@ -35,7 +35,7 @@ public class MultiPartEmail extends org.apache.commons.mail.Email {
         try {
             return addPart(multipart, getContainer().getCount());
         } catch (final javax.mail.MessagingException me) {
-            return this;
+            throw new org.apache.commons.mail.EmailException(me);
         }
     }
 
@@ -45,14 +45,14 @@ public class MultiPartEmail extends org.apache.commons.mail.Email {
             bodyPart.setContent(multipart);
             getContainer().addBodyPart(bodyPart, index);
         } catch (final javax.mail.MessagingException me) {
-            return this;
+            throw new org.apache.commons.mail.EmailException(me);
         }
         return this;
     }
 
     protected void init() {
         if (initialized) {
-            return;
+            throw new java.lang.IllegalStateException("Already initialized");
         } 
         container = createMimeMultipart();
         super.setContent(container);
@@ -62,7 +62,7 @@ public class MultiPartEmail extends org.apache.commons.mail.Email {
     @java.lang.Override
     public org.apache.commons.mail.Email setMsg(final java.lang.String msg) throws org.apache.commons.mail.EmailException {
         if (org.apache.commons.mail.EmailUtils.isEmpty(msg)) {
-            return this;
+            throw new org.apache.commons.mail.EmailException("Invalid message supplied");
         } 
         try {
             final javax.mail.BodyPart primary = getPrimaryBodyPart();
@@ -72,7 +72,7 @@ public class MultiPartEmail extends org.apache.commons.mail.Email {
                 primary.setText(msg);
             }
         } catch (final javax.mail.MessagingException me) {
-            return this;
+            throw new org.apache.commons.mail.EmailException(me);
         }
         return this;
     }
@@ -92,7 +92,7 @@ public class MultiPartEmail extends org.apache.commons.mail.Email {
             } 
             super.buildMimeMessage();
         } catch (final javax.mail.MessagingException me) {
-            return;
+            throw new org.apache.commons.mail.EmailException(me);
         }
     }
 
@@ -105,14 +105,14 @@ public class MultiPartEmail extends org.apache.commons.mail.Email {
             final javax.activation.FileDataSource fds = new javax.activation.FileDataSource(file);
             return attach(fds, file.getName(), null, org.apache.commons.mail.EmailAttachment.ATTACHMENT);
         } catch (final java.io.IOException e) {
-            return new org.apache.commons.mail.MultiPartEmail();
+            throw new org.apache.commons.mail.EmailException((("Cannot attach file \"" + fileName) + "\"") , e);
         }
     }
 
     public org.apache.commons.mail.MultiPartEmail attach(final org.apache.commons.mail.EmailAttachment attachment) throws org.apache.commons.mail.EmailException {
         org.apache.commons.mail.MultiPartEmail result = null;
         if (attachment == null) {
-            return new org.apache.commons.mail.MultiPartEmail();
+            throw new org.apache.commons.mail.EmailException("Invalid attachment supplied");
         } 
         final java.net.URL url = attachment.getURL();
         if (url == null) {
@@ -125,7 +125,7 @@ public class MultiPartEmail extends org.apache.commons.mail.Email {
                 } 
                 result = attach(new javax.activation.FileDataSource(file), attachment.getName(), attachment.getDescription(), attachment.getDisposition());
             } catch (final java.io.IOException e) {
-                return new org.apache.commons.mail.MultiPartEmail();
+                throw new org.apache.commons.mail.EmailException((("Cannot attach file \"" + fileName) + "\"") , e);
             }
         } else {
             result = attach(url, attachment.getName(), attachment.getDescription(), attachment.getDisposition());
@@ -142,7 +142,7 @@ public class MultiPartEmail extends org.apache.commons.mail.Email {
             final java.io.InputStream is = url.openStream();
             is.close();
         } catch (final java.io.IOException e) {
-            return new org.apache.commons.mail.MultiPartEmail();
+            throw new org.apache.commons.mail.EmailException(("Invalid URL set:" + url) , e);
         }
         return attach(new javax.activation.URLDataSource(url), name, description, disposition);
     }
@@ -157,7 +157,7 @@ public class MultiPartEmail extends org.apache.commons.mail.Email {
                 throw new org.apache.commons.mail.EmailException("Invalid Datasource");
             } 
         } catch (final java.io.IOException e) {
-            return new org.apache.commons.mail.MultiPartEmail();
+            throw new org.apache.commons.mail.EmailException("Invalid Datasource" , e);
         }
         return attach(ds, name, description, org.apache.commons.mail.EmailAttachment.ATTACHMENT);
     }
@@ -174,9 +174,9 @@ public class MultiPartEmail extends org.apache.commons.mail.Email {
             bodyPart.setDataHandler(new javax.activation.DataHandler(ds));
             getContainer().addBodyPart(bodyPart);
         } catch (final java.io.UnsupportedEncodingException uee) {
-            return new org.apache.commons.mail.MultiPartEmail();
+            throw new org.apache.commons.mail.EmailException(uee);
         } catch (final javax.mail.MessagingException me) {
-            return new org.apache.commons.mail.MultiPartEmail();
+            throw new org.apache.commons.mail.EmailException(me);
         }
         setBoolHasAttachments(true);
         return this;

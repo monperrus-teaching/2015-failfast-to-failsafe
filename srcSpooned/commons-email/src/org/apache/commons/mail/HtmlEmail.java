@@ -19,7 +19,7 @@ public class HtmlEmail extends org.apache.commons.mail.MultiPartEmail {
 
     public org.apache.commons.mail.HtmlEmail setTextMsg(final java.lang.String aText) throws org.apache.commons.mail.EmailException {
         if (org.apache.commons.mail.EmailUtils.isEmpty(aText)) {
-            return new org.apache.commons.mail.HtmlEmail();
+            throw new org.apache.commons.mail.EmailException("Invalid message supplied");
         } 
         this.text = aText;
         return this;
@@ -27,7 +27,7 @@ public class HtmlEmail extends org.apache.commons.mail.MultiPartEmail {
 
     public org.apache.commons.mail.HtmlEmail setHtmlMsg(final java.lang.String aHtml) throws org.apache.commons.mail.EmailException {
         if (org.apache.commons.mail.EmailUtils.isEmpty(aHtml)) {
-            return new org.apache.commons.mail.HtmlEmail();
+            throw new org.apache.commons.mail.EmailException("Invalid message supplied");
         } 
         this.html = aHtml;
         return this;
@@ -36,7 +36,7 @@ public class HtmlEmail extends org.apache.commons.mail.MultiPartEmail {
     @java.lang.Override
     public org.apache.commons.mail.Email setMsg(final java.lang.String msg) throws org.apache.commons.mail.EmailException {
         if (org.apache.commons.mail.EmailUtils.isEmpty(msg)) {
-            return this;
+            throw new org.apache.commons.mail.EmailException("Invalid message supplied");
         } 
         setTextMsg(msg);
         final java.lang.StringBuffer htmlMsgBuf = new java.lang.StringBuffer((((msg.length()) + (HTML_MESSAGE_START.length())) + (HTML_MESSAGE_END.length())));
@@ -49,13 +49,13 @@ public class HtmlEmail extends org.apache.commons.mail.MultiPartEmail {
         try {
             return embed(new java.net.URL(urlString), name);
         } catch (final java.net.MalformedURLException e) {
-            return new java.lang.String();
+            throw new org.apache.commons.mail.EmailException("Invalid URL" , e);
         }
     }
 
     public java.lang.String embed(final java.net.URL url, final java.lang.String name) throws org.apache.commons.mail.EmailException {
         if (org.apache.commons.mail.EmailUtils.isEmpty(name)) {
-            return new java.lang.String();
+            throw new org.apache.commons.mail.EmailException("name cannot be null or empty");
         } 
         if (inlineEmbeds.containsKey(name)) {
             final org.apache.commons.mail.HtmlEmail.InlineImage ii = inlineEmbeds.get(name);
@@ -63,13 +63,13 @@ public class HtmlEmail extends org.apache.commons.mail.MultiPartEmail {
             if (url.toExternalForm().equals(urlDataSource.getURL().toExternalForm())) {
                 return ii.getCid();
             } 
-            return new java.lang.String();
+            throw new org.apache.commons.mail.EmailException((((("embedded name \'" + name) + "\' is already bound to URL ") + (urlDataSource.getURL())) + "; existing names cannot be rebound"));
         } 
         java.io.InputStream is = null;
         try {
             is = url.openStream();
         } catch (final java.io.IOException e) {
-            return new java.lang.String();
+            throw new org.apache.commons.mail.EmailException("Invalid URL" , e);
         } finally {
             try {
                 if (is != null) {
@@ -88,13 +88,13 @@ public class HtmlEmail extends org.apache.commons.mail.MultiPartEmail {
 
     public java.lang.String embed(final java.io.File file, final java.lang.String cid) throws org.apache.commons.mail.EmailException {
         if (org.apache.commons.mail.EmailUtils.isEmpty(file.getName())) {
-            return new java.lang.String();
+            throw new org.apache.commons.mail.EmailException("file name cannot be null or empty");
         } 
         java.lang.String filePath = null;
         try {
             filePath = file.getCanonicalPath();
         } catch (final java.io.IOException ioe) {
-            return new java.lang.String();
+            throw new org.apache.commons.mail.EmailException(("couldn\'t get canonical path for " + (file.getName())) , ioe);
         }
         if (inlineEmbeds.containsKey(file.getName())) {
             final org.apache.commons.mail.HtmlEmail.InlineImage ii = inlineEmbeds.get(file.getName());
@@ -103,21 +103,21 @@ public class HtmlEmail extends org.apache.commons.mail.MultiPartEmail {
             try {
                 existingFilePath = fileDataSource.getFile().getCanonicalPath();
             } catch (final java.io.IOException ioe) {
-                return new java.lang.String();
+                throw new org.apache.commons.mail.EmailException((("couldn\'t get canonical path for file " + (fileDataSource.getFile().getName())) + "which has already been embedded") , ioe);
             }
             if (filePath.equals(existingFilePath)) {
                 return ii.getCid();
             } 
-            return new java.lang.String();
+            throw new org.apache.commons.mail.EmailException((((("embedded name \'" + (file.getName())) + "\' is already bound to file ") + existingFilePath) + "; existing names cannot be rebound"));
         } 
         if (!(file.exists())) {
-            return new java.lang.String();
+            throw new org.apache.commons.mail.EmailException((("file " + filePath) + " doesn\'t exist"));
         } 
         if (!(file.isFile())) {
-            return new java.lang.String();
+            throw new org.apache.commons.mail.EmailException((("file " + filePath) + " isn\'t a normal file"));
         } 
         if (!(file.canRead())) {
-            return new java.lang.String();
+            throw new org.apache.commons.mail.EmailException((("file " + filePath) + " isn\'t readable"));
         } 
         return embed(new javax.activation.FileDataSource(file), file.getName(), cid);
     }
@@ -128,7 +128,7 @@ public class HtmlEmail extends org.apache.commons.mail.MultiPartEmail {
             if (dataSource.equals(ii.getDataSource())) {
                 return ii.getCid();
             } 
-            return new java.lang.String();
+            throw new org.apache.commons.mail.EmailException((((("embedded DataSource \'" + name) + "\' is already bound to name ") + (ii.getDataSource().toString())) + "; existing names cannot be rebound"));
         } 
         final java.lang.String cid = org.apache.commons.mail.EmailUtils.randomAlphabetic(CID_LENGTH).toLowerCase();
         return embed(dataSource, name, cid);
@@ -136,7 +136,7 @@ public class HtmlEmail extends org.apache.commons.mail.MultiPartEmail {
 
     public java.lang.String embed(final javax.activation.DataSource dataSource, final java.lang.String name, final java.lang.String cid) throws org.apache.commons.mail.EmailException {
         if (org.apache.commons.mail.EmailUtils.isEmpty(name)) {
-            return new java.lang.String();
+            throw new org.apache.commons.mail.EmailException("name cannot be null or empty");
         } 
         final javax.mail.internet.MimeBodyPart mbp = new javax.mail.internet.MimeBodyPart();
         try {
@@ -149,9 +149,9 @@ public class HtmlEmail extends org.apache.commons.mail.MultiPartEmail {
             this.inlineEmbeds.put(name, ii);
             return encodedCid;
         } catch (final javax.mail.MessagingException me) {
-            return new java.lang.String();
+            throw new org.apache.commons.mail.EmailException(me);
         } catch (final java.io.UnsupportedEncodingException uee) {
-            return new java.lang.String();
+            throw new org.apache.commons.mail.EmailException(uee);
         }
     }
 
@@ -160,7 +160,7 @@ public class HtmlEmail extends org.apache.commons.mail.MultiPartEmail {
         try {
             build();
         } catch (final javax.mail.MessagingException me) {
-            return;
+            throw new org.apache.commons.mail.EmailException(me);
         }
         super.buildMimeMessage();
     }
@@ -183,7 +183,7 @@ public class HtmlEmail extends org.apache.commons.mail.MultiPartEmail {
                     bodyPart.setContent(bodyContainer);
                     bodyEmbedsContainer.addBodyPart(bodyPart, 0);
                 } catch (final javax.mail.MessagingException me) {
-                    return;
+                    throw new org.apache.commons.mail.EmailException(me);
                 }
             } 
         } else if ((org.apache.commons.mail.EmailUtils.isNotEmpty(this.text)) && (org.apache.commons.mail.EmailUtils.isNotEmpty(this.html))) {
