@@ -15,8 +15,6 @@ Nous utilisons [_Spoon_](http://spoon.gforge.inria.fr/) comme moteur de transfor
 ##_Validation_
 Nous avons testé notre processeur de transformation sur le projet [_Apache Commons Email_](http://commons.apache.org/proper/commons-email/).
 
-![alt text](http://commons.apache.org/ "Logo Apache Commons")
-
 ###_Mode opératoire_
 Pour valider nos tranformations sur _Apache Commons Email_ nous avons :
 * Testé le fonctionnement natif de _Apache Commons Email_
